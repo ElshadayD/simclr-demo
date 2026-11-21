@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: lumen-xray
+    runtime: python
+    # Memory-trimmed build: try the 512 MB tier first and watch /api/status (rss_mb, peak_mb).
+    # If peak_mb gets close to 512 or Render restarts the service, switch to "standard" (2 GB).
+    plan: free
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
+    # One worker (the model lives in memory once), several threads for the web requests.
+    startCommand: gunicorn app:app --workers 1 --threads 2 --timeout 180 --bind 0.0.0.0:$PORT
+    healthCheckPath: /healthz
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: TORCH_THREADS
+        value: "2"
+      - key: MALLOC_ARENA_MAX      # stops glibc from growing a heap per thread
+        value: "2"
+      - key: ONEDNN_PRIMITIVE_CACHE_CAPACITY
+        value: "8"
+      - key: HF_TOKEN        # only needed if the Hugging Face repo is private
+        sync: false
