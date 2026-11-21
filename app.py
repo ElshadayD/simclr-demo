@@ -145,6 +145,20 @@ def analyze(img, tta=False):
 app = Flask(__name__, template_folder=os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates"))
 app.config["MAX_CONTENT_LENGTH"] = 64 * 1024 * 1024
 
+_boot_lock = threading.Lock()
+_boot_started = False
+
+def start_boot():
+    global _boot_started
+
+    with _boot_lock:
+        if not _boot_started:
+            _boot_started = True
+            threading.Thread(target=boot, daemon=True).start()
+
+# Start model initialization when the Flask application is imported.
+start_boot()
+
 
 @app.errorhandler(Exception)
 def on_error(e):
