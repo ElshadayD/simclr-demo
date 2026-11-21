@@ -1,8 +1,10 @@
-# CPU-only PyTorch (the default PyPI wheel bundles CUDA and is several GB: too big for Render)
+# CPU-only PyTorch: the default PyPI wheel bundles CUDA and is several GB (too big for Render).
+# With this extra index, pip prefers the "+cpu" build of the newest matching version.
+# Version ranges (not exact pins) so it installs on Python 3.10 - 3.14 alike.
 --extra-index-url https://download.pytorch.org/whl/cpu
-torch==2.4.1+cpu
-torchvision==0.19.1+cpu
-numpy==1.26.4
-Pillow>=10.0,<12
-Flask>=3.0,<4
+torch>=2.4
+torchvision>=0.19
+numpy>=1.26
+Pillow>=10.0
+Flask>=3.0
 gunicorn>=22.0
