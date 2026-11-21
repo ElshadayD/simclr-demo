@@ -10,8 +10,6 @@ services:
     startCommand: gunicorn app:app --workers 1 --threads 2 --timeout 180 --bind 0.0.0.0:$PORT
     healthCheckPath: /healthz
     envVars:
-      - key: PYTHON_VERSION
-        value: 3.11.9
       - key: TORCH_THREADS
         value: "2"
       - key: MALLOC_ARENA_MAX      # stops glibc from growing a heap per thread
