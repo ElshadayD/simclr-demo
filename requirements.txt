@@ -1,6 +1,8 @@
-flask>=3.0
-gunicorn
-torch>=2.0
-torchvision>=0.15
-pillow
-numpy
+# CPU-only PyTorch (the default PyPI wheel bundles CUDA and is several GB: too big for Render)
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.4.1+cpu
+torchvision==0.19.1+cpu
+numpy==1.26.4
+Pillow>=10.0,<12
+Flask>=3.0,<4
+gunicorn>=22.0
